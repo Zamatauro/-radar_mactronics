@@ -1,0 +1,55 @@
+# Vendor partner di Mactronics.IT (da Brand Manual v1.5 §10)
+# Usati per bonus +3 nello scoring (detection codice + hint LLM).
+# Aggiornare quando Mactronics aggiunge/perde mandati di partnership.
+
+# Brand singoli (case-insensitive substring match)
+maison:
+  # Server/HPC
+  - "Supermicro"
+  - "Gigabyte"
+
+  # Storage HPC/Enterprise
+  - "DDN"                          # DataDirect Networks
+  - "DataDirect Networks"
+  - "Infortrend"
+  - "EonStor"                      # serie storage Infortrend
+  - "EXAScaler"                    # piattaforma DDN
+
+  # GPU / Networking HPC
+  - "NVIDIA"
+  - "Mellanox"
+  - "InfiniBand"                   # tecnologia chiave
+
+  # Storage Media (HDD/SSD)
+  - "Western Digital"
+  - "Toshiba"
+  - "Kioxia"
+
+  # Cooling
+  - "Zutacore"
+  - "ZutaCore"
+
+  # Software / SDS
+  - "Open-E"
+  - "Tiger Technology"
+
+  # CPU / Networking
+  - "AMD"
+  - "EPYC"                         # CPU AMD
+  - "Intel"                        # citato come "Xeon"
+  - "Xeon"
+  - "Broadcom"
+
+  # Storage / Networking China
+  - "Huawei"
+
+  # Virtualizzazione (presenti nei key message ma non distributori esclusivi)
+  - "VMware"                       # certificazione attiva
+  - "Hyper-V"
+  - "Red Hat Virtualization"
+  - "Proxmox"
+
+# Gruppi / holding di riferimento
+gruppi:
+  - "Broadcom Inc"
+  - "Micron"                       # se citato come riferimento storage

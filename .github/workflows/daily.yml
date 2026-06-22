@@ -1,0 +1,67 @@
+name: Radar Mactronics — Run
+
+on:
+  schedule:
+    # CADENZA BISETTIMANALE: lunedì + giovedì mattina alle 06:00 Rome.
+    # GitHub Actions cron è in UTC e non supporta timezone:
+    # - Ora legale CEST (mar-ott): 04:00 UTC = 06:00 Rome
+    # - Ora solare CET (ott-mar): 05:00 UTC = 06:00 Rome
+    # Il guard Python --min-hour=6 esclude i run prima delle 6 Rome.
+    # Il guard --skip-if-sent esclude il secondo run del giorno.
+    # Day of week: 1=lun, 4=gio
+    - cron: "0 4,5 * * 1,4"
+
+  workflow_dispatch:
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Radar
+        id: run_radar
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.RADAR_EDITORIALE }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API }}
+          RADAR_FROM_EMAIL: ${{ vars.RADAR_FROM_EMAIL }}
+          RADAR_TO_EMAILS: ${{ vars.RADAR_TO_EMAILS }}
+          TZ: Europe/Rome
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            python main.py --skip-if-sent --min-hour=6
+          else
+            python main.py
+          fi
+
+      # Persistenza DB: strategia anti-conflitto reset+overwrite
+      - name: Commit DB aggiornato
+        if: always()
+        run: |
+          git config user.name "radar-mactronics-bot"
+          git config user.email "radar@radar.oida-labs.com"
+          if ! git diff --quiet data/radar.db 2>/dev/null && [ -f data/radar.db ]; then
+            cp data/radar.db /tmp/radar.db.new
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/radar.db.new data/radar.db
+            git add data/radar.db
+            git commit -m "chore: aggiornamento DB radar Mactronics [skip ci]"
+            git push
+          else
+            echo "DB non modificato, niente da committare"
+          fi

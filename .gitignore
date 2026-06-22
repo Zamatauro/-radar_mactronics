@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.env
+data/preview_email.html
+.venv/
+
+# NOTA: data/radar.db è committato nel repo per persistenza articoli
+# già classificati (evita ri-pagare scoring API ogni giorno)

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Mactronics.IT</title>
+</head>
+<!--
+  Palette Mactronics (Brand Manual v1.5):
+    #4176BA  Blu Mactronics    primario (logo, titoli, CTA)
+    #009FE3  Azzurro Sky       secondario (highlight, icone)
+    #FFB140  Ambra             contrasto (badge, dati in evidenza)
+    #F0F3F5  Platino           sfondo neutro
+    #8A9BB0  Grigio Medio      caption, label
+    #1E2B3C  Blu Notte         testo principale, header/footer scuro
+    #FFFFFF  Bianco            base
+  Font: Barlow (titoli) + Inter (corpo)
+-->
+<body style="margin:0;padding:0;background:#F0F3F5;font-family:'Inter','Helvetica Neue',Arial,sans-serif;color:#1E2B3C;font-size:15px;line-height:1.65;">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F0F3F5;">
+<tr><td align="center" style="padding:24px 16px;">
+<table width="680" cellpadding="0" cellspacing="0" border="0" style="max-width:680px;width:100%;background:#FFFFFF;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(30,43,60,0.10);">
+
+<!-- HEADER -->
+<tr><td style="padding:32px 32px 24px;background:#1E2B3C;border-bottom:3px solid #4176BA;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td>
+      <div style="font-size:11px;color:#009FE3;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:10px;font-weight:700;font-family:'Barlow',sans-serif;">Radar Mactronics.IT</div>
+      <div style="font-size:26px;color:#FFFFFF;font-weight:700;letter-spacing:0.01em;font-family:'Barlow',sans-serif;">{{ today }}</div>
+    </td>
+    <td align="right" valign="top">
+      <div style="font-size:11px;color:#FFFFFF;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;font-family:'Barlow',sans-serif;">MACTRONICS.IT</div>
+      <div style="font-size:10px;color:#8A9BB0;margin-top:6px;letter-spacing:0.08em;">The Storage Expert</div>
+      <div style="font-size:10px;color:#8A9BB0;margin-top:2px;letter-spacing:0.04em;">{{ generated_at }}</div>
+    </td>
+  </tr>
+  </table>
+</td></tr>
+
+<!-- Bilanciamento angoli -->
+<tr><td style="padding:14px 32px;background:#F0F3F5;border-bottom:1px solid #e2e6ea;">
+  <div style="font-size:10px;color:#8A9BB0;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;margin-bottom:3px;font-family:'Barlow',sans-serif;">Bilanciamento canali</div>
+  <div style="font-size:14px;color:#1E2B3C;font-weight:500;">{{ angle_summary }}</div>
+</td></tr>
+
+<!-- VENDOR PARTNER NELLE NEWS -->
+{% if maison_items %}
+<tr><td style="padding:28px 32px 8px;background:#FFFFFF;">
+  <div style="font-size:11px;color:#FFB140;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:6px;font-family:'Barlow',sans-serif;">&#9733; Vendor partner nelle news</div>
+  <div style="font-size:13px;color:#8A9BB0;">Articoli che citano partner Mactronics &mdash; massima priorit&agrave; editoriale</div>
+</td></tr>
+
+{% for item in maison_items %}
+<tr><td style="padding:8px 32px 18px;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF;border:2px solid #FFB140;border-radius:6px;overflow:hidden;">
+  <tr><td style="padding:14px 18px;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td>
+        <span style="display:inline-block;background:#4176BA;color:#FFFFFF;font-size:11px;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:0.05em;font-family:'Barlow',sans-serif;">{{ item.score }}/10</span>
+        <span style="display:inline-block;font-size:11px;color:#1E2B3C;background:#FFB140;padding:3px 9px;border-radius:3px;margin-left:6px;font-weight:700;letter-spacing:0.06em;">{{ item.portfolio_match }}</span>
+        {% if item.area_tech_label %}
+        <span style="display:inline-block;font-size:10px;color:#1E2B3C;border:1px solid #009FE3;padding:2px 8px;border-radius:3px;margin-left:6px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;font-family:'Barlow',sans-serif;">{{ item.area_tech_label }}</span>
+        {% endif %}
+      </td>
+      <td align="right">
+        <span style="font-size:10px;color:#8A9BB0;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;font-family:'Barlow',sans-serif;">{{ item.channel_label }}</span>
+      </td>
+    </tr>
+    </table>
+    <div style="margin-top:10px;">
+      <div style="font-size:11px;color:#8A9BB0;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em;font-weight:700;font-family:'Barlow',sans-serif;">{{ item.source_name }}</div>
+      <a href="{{ item.url }}" style="font-size:16px;color:#1E2B3C;text-decoration:none;font-weight:700;line-height:1.35;font-family:'Barlow',sans-serif;">{{ item.display_title }}</a>
+    </div>
+    {% if item.angle %}
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid #e2e6ea;">
+      <div style="font-size:10px;color:#4176BA;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;margin-bottom:4px;font-family:'Barlow',sans-serif;">Angolo Mactronics</div>
+      <div style="font-size:14px;color:#1E2B3C;line-height:1.5;">{{ item.angle }}</div>
+    </div>
+    {% endif %}
+  </td></tr>
+  </table>
+</td></tr>
+{% endfor %}
+{% endif %}
+
+<!-- TOP ARTICOLI (flusso unico) -->
+{% if top_items %}
+<tr><td style="padding:28px 32px 8px;background:#FFFFFF;">
+  <div style="font-size:11px;color:#4176BA;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:6px;font-family:'Barlow',sans-serif;">Top spunti editoriali</div>
+  <div style="font-size:13px;color:#8A9BB0;">Ranking per gancio editoriale Mactronics B2B</div>
+</td></tr>
+
+{% for item in top_items %}
+<tr><td style="padding:8px 32px 20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF;border:1px solid #e2e6ea;border-radius:6px;overflow:hidden;">
+
+  <!-- Header card: score, pilastro, area_tech, tempestività -->
+  <tr><td style="padding:14px 18px 10px;border-bottom:1px solid #F0F3F5;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td>
+        <!-- Score -->
+        <span style="display:inline-block;background:{% if item.score >= 8 %}#4176BA{% elif item.score >= 6 %}#009FE3{% else %}#8A9BB0{% endif %};color:#FFFFFF;font-size:11px;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:0.05em;font-family:'Barlow',sans-serif;">{{ item.score }}/10</span>
+        <!-- Pilastro / Filone -->
+        <span style="display:inline-block;font-size:10px;color:#1E2B3C;border:1px solid #4176BA;padding:2px 8px;border-radius:3px;letter-spacing:0.06em;text-transform:uppercase;margin-left:6px;font-weight:600;font-family:'Barlow',sans-serif;">{{ item.pillar_label }}</span>
+        <!-- Area tech -->
+        {% if item.area_tech_label %}
+        <span style="display:inline-block;font-size:10px;color:#1E2B3C;background:#F0F3F5;padding:3px 8px;border-radius:3px;letter-spacing:0.06em;text-transform:uppercase;margin-left:6px;font-weight:600;font-family:'Barlow',sans-serif;">{{ item.area_tech_label }}</span>
+        {% endif %}
+        <!-- Tempestività -->
+        {% if item.tempestivita_label %}
+        <span style="display:inline-block;font-size:10px;color:#8A9BB0;border:1px solid #8A9BB0;padding:2px 8px;border-radius:3px;letter-spacing:0.06em;text-transform:uppercase;margin-left:6px;font-weight:600;font-family:'Barlow',sans-serif;">{{ item.tempestivita_label }}</span>
+        {% endif %}
+      </td>
+      <td align="right">
+        <span style="font-size:10px;color:#8A9BB0;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;font-family:'Barlow',sans-serif;">{{ item.channel_label }}</span>
+      </td>
+    </tr>
+    </table>
+  </td></tr>
+
+  <!-- Titolo + Fonte -->
+  <tr><td style="padding:14px 18px 6px;">
+    <div style="font-size:11px;color:#8A9BB0;margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;font-family:'Barlow',sans-serif;">{{ item.source_name }}</div>
+    <a href="{{ item.url }}" style="font-size:16px;color:#1E2B3C;text-decoration:none;font-weight:700;line-height:1.35;font-family:'Barlow',sans-serif;">{{ item.display_title }}</a>
+  </td></tr>
+
+  <!-- Angolo Mactronics -->
+  {% if item.angle %}
+  <tr><td style="padding:12px 18px;background:#F0F3F5;border-top:1px solid #e2e6ea;">
+    <div style="font-size:10px;color:#4176BA;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:4px;font-weight:700;font-family:'Barlow',sans-serif;">Angolo Mactronics</div>
+    <div style="font-size:14px;color:#1E2B3C;line-height:1.5;">{{ item.angle }}</div>
+  </td></tr>
+  {% endif %}
+
+  <!-- Hooks -->
+  {% if item.hooks %}
+  <tr><td style="padding:12px 18px;">
+    <div style="font-size:10px;color:#8A9BB0;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;font-weight:700;font-family:'Barlow',sans-serif;">Hook suggeriti</div>
+    {% for hook in item.hooks %}
+    <div style="font-size:14px;color:#1E2B3C;background:#FFFFFF;border-left:3px solid #009FE3;padding:10px 14px;margin-bottom:6px;line-height:1.45;font-style:italic;border-top:1px solid #F0F3F5;border-right:1px solid #F0F3F5;border-bottom:1px solid #F0F3F5;">"{{ hook }}"</div>
+    {% endfor %}
+  </td></tr>
+  {% endif %}
+
+  <!-- Meta: formato + hashtag -->
+  <tr><td style="padding:8px 18px 10px;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td>
+        {% if item.format %}
+        <span style="font-size:10px;color:#8A9BB0;border:1px solid #e2e6ea;padding:3px 7px;border-radius:3px;letter-spacing:0.06em;text-transform:uppercase;font-weight:700;font-family:'Barlow',sans-serif;">{{ item.format }}</span>
+        {% endif %}
+      </td>
+      <td align="right">
+        {% for tag in item.hashtags %}
+        <span style="font-size:12px;color:#4176BA;font-weight:600;">{{ tag }}</span>
+        {% if not loop.last %} {% endif %}
+        {% endfor %}
+      </td>
+    </tr>
+    </table>
+  </td></tr>
+
+  <!-- Istruzioni pubblicazione -->
+  <tr><td style="padding:12px 18px 14px;border-top:1px solid #F0F3F5;background:#F0F3F5;">
+    <div style="font-size:10px;color:#4176BA;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;font-weight:700;font-family:'Barlow',sans-serif;">Istruzioni pubblicazione</div>
+    <div style="font-size:13px;color:#1E2B3C;line-height:1.65;">
+      <span style="color:#4176BA;font-weight:700;">&#9632;</span> <strong style="color:#1E2B3C;">Lunghezza:</strong> <span style="color:#8A9BB0;">{{ item.length_hint }}</span><br>
+      <span style="color:#4176BA;font-weight:700;">&#9632;</span> <strong style="color:#1E2B3C;">Timing:</strong> <span style="color:#8A9BB0;">{{ item.publish_hint }}</span><br>
+      <span style="color:#4176BA;font-weight:700;">&#9632;</span> <strong style="color:#1E2B3C;">Boost:</strong> <span style="color:#8A9BB0;">{{ item.comments_hint }}</span>
+    </div>
+  </td></tr>
+
+  </table>
+</td></tr>
+{% endfor %}
+{% endif %}
+
+<!-- FOOTER -->
+<tr><td style="padding:24px 32px;background:#1E2B3C;border-top:3px solid #4176BA;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td>
+      <div style="font-size:11px;color:#FFFFFF;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;font-family:'Barlow',sans-serif;">MACTRONICS.IT</div>
+      <div style="font-size:11px;color:#009FE3;margin-top:4px;font-style:italic;">The Storage Expert</div>
+      <div style="font-size:10px;color:#8A9BB0;margin-top:6px;">Radar editoriale &middot; bisettimanale &middot; lun + gio</div>
+    </td>
+    <td align="right">
+      <div style="font-size:10px;color:#FFB140;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;font-family:'Barlow',sans-serif;">v1.0</div>
+      <div style="font-size:10px;color:#8A9BB0;margin-top:4px;">Powered by OIDA Labs</div>
+    </td>
+  </tr>
+  </table>
+</td></tr>
+
+</table>
+</td></tr>
+</table>
+
+</body>
+</html>

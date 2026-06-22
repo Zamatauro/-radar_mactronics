@@ -1,0 +1,149 @@
+# Radar Mactronics — Fonti RSS
+# Cadenza bisettimanale (lunedì + giovedì mattina) per HPC/Storage/Server/Virtualizzazione.
+# Tier indica il ruolo strategico, non il flusso (qui flusso unico rankizzato).
+
+sources:
+
+  # ─── TIER A: storage / datacenter / HPC core (internazionali) ───
+
+  - name: "Blocks & Files"
+    feed_url: "https://blocksandfiles.com/feed/"
+    tier: 1
+    category: "storage"
+    language: "en"
+    flow: "fast"
+    notes: "Specialista storage enterprise, copertura DDN/Pure/NetApp/Infortrend"
+
+  - name: "StorageReview"
+    feed_url: "https://www.storagereview.com/feed"
+    tier: 1
+    category: "storage"
+    language: "en"
+    flow: "fast"
+    notes: "Test e review storage hardware, vendor comparativi"
+
+  - name: "The Next Platform"
+    feed_url: "https://www.nextplatform.com/feed/"
+    tier: 1
+    category: "hpc_server"
+    language: "en"
+    flow: "fast"
+    notes: "HPC, server architecture, GPU computing — fonte chiave per F1+F3"
+
+  - name: "HPCwire"
+    feed_url: "https://www.hpcwire.com/feed/"
+    tier: 1
+    category: "hpc"
+    language: "en"
+    flow: "fast"
+    notes: "Specialista HPC mondiale, eventi (ISC, SC), Top500"
+
+  - name: "Data Center Knowledge"
+    feed_url: "https://www.datacenterknowledge.com/rss.xml"
+    tier: 1
+    category: "datacenter"
+    language: "en"
+    flow: "fast"
+    notes: "Business e architettura data center, sostenibilità, AI infrastructure"
+
+  - name: "The Register"
+    feed_url: "https://www.theregister.com/headlines.atom"
+    tier: 1
+    category: "enterprise_it"
+    language: "en"
+    flow: "fast"
+    notes: "IT enterprise news, ottimo per F3 (Broadcom/VMware, NVIDIA, AI)"
+
+  # ─── TIER B: IT business / networking / enterprise ───
+
+  - name: "Network World"
+    feed_url: "https://www.networkworld.com/feed/"
+    tier: 2
+    category: "networking"
+    language: "en"
+    flow: "fast"
+    notes: "Networking, virtualizzazione, multi-cloud"
+
+  - name: "TechCrunch Enterprise"
+    feed_url: "https://techcrunch.com/category/enterprise/feed/"
+    tier: 2
+    category: "enterprise_tech"
+    language: "en"
+    flow: "fast"
+    notes: "Funding, M&A, AI enterprise — utile per F3 trend"
+
+  - name: "Tom's Hardware Italia"
+    feed_url: "https://www.tomshw.it/feed/"
+    tier: 2
+    category: "hardware_it"
+    language: "it"
+    flow: "fast"
+    notes: "Hardware in italiano, GPU/CPU news"
+
+  # ─── TIER C: IT italiano / settore ───
+
+  - name: "BitMAT"
+    feed_url: "https://www.bitmat.it/feed/"
+    tier: 3
+    category: "it_italia"
+    language: "it"
+    flow: "fast"
+    notes: "IT business in Italia, focus enterprise e canale"
+
+  - name: "01net.it"
+    feed_url: "https://www.01net.it/feed/"
+    tier: 3
+    category: "it_italia"
+    language: "it"
+    flow: "fast"
+    notes: "Notizie IT italiane, infrastruttura e cloud"
+
+  - name: "Punto Informatico"
+    feed_url: "https://www.punto-informatico.it/feed/"
+    tier: 3
+    category: "it_italia"
+    language: "it"
+    flow: "fast"
+    notes: "IT generalista italiano"
+
+  - name: "Lineaedp"
+    feed_url: "https://www.lineaedp.it/feed/"
+    tier: 3
+    category: "it_italia"
+    language: "it"
+    flow: "fast"
+    notes: "IT business Italia, system integrator"
+
+  - name: "CIO Italia"
+    feed_url: "https://www.cio.com/it/feed/"
+    tier: 2
+    category: "cio_target"
+    language: "it"
+    flow: "fast"
+    notes: "Audience CTO/CIO — il target diretto del CEO Samir"
+
+  - name: "Agenda Digitale"
+    feed_url: "https://www.agendadigitale.eu/feed/"
+    tier: 3
+    category: "policy_digitale"
+    language: "it"
+    flow: "fast"
+    notes: "Policy digitale, PNRR, PA — utile per Storage PA, gare"
+
+
+# ─── Configurazione globale ───
+
+settings:
+  # Cadenza bisettimanale (cron lun+gio):
+  # • Lunedì copre ~96h (cattura weekend: ven→lun)
+  # • Giovedì copre ~72h (lun→gio)
+  max_age_hours_fast: 72
+  max_age_hours_fast_monday: 96
+
+  max_age_hours_slow: 168
+
+  # Score minimo per entrare nell'email
+  min_score: 5
+
+  # Massimo articoli totali nell'email
+  max_email_items: 10
