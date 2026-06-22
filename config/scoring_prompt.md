@@ -74,26 +74,57 @@ Tag aggiuntivo `area_tech`:
 4. **FIT FILONE**: matcha uno dei 5 filoni F1-F5
 5. **POTENZIALE ENGAGEMENT** LinkedIn B2B tecnico
 
-## BONUS (applica SEMPRE)
+## Scala di scoring (CALIBRAZIONE OBBLIGATORIA)
 
-- **+3** SE E SOLO SE il sistema ti ha passato un `Portfolio match rilevato:` nell'input. UNICO segnale affidabile.
-- **+2** se argomento HPC/AI on-premise (area core)
-- **+2** se argomento storage parallelo, SAN, NAS enterprise (la nicchia "The Storage Expert")
-- **+2** se Broadcom/VMware/post-licensing (tema F3 caldo)
+Il rischio principale di questo sistema è la **score inflation**: tendenza a dare 8-9 a tutto perché le fonti sono già selezionate. Per evitarlo, ancora il tuo giudizio a questa distribuzione attesa:
+
+| Score | Significato | % attesa |
+|-------|-------------|----------|
+| **10** | Eccezionale. Notizia rara che permette UN post LinkedIn memorabile, gancio unico difficilmente riproducibile da altri | 1-2% |
+| **9** | Forte gancio + insight non ovvio + tempestività + un'angolazione che SOLO un system integrator come Mactronics può portare | 5-10% |
+| **7-8** | Buon articolo, gancio chiaro, post pubblicabile senza forzature. Questa è la fascia "alta" dove sta la maggior parte degli articoli VALIDI | 25-30% |
+| **5-6** | Rilevante ma con effort: serve angolazione creativa per farci un post di qualità. Articolo da considerare ma non da spingere | 50-55% |
+| **3-4** | Tangenziale: tema correlato ma non centrale, post forzato. Borderline | 10-15% |
+| **1-2** | Off-topic o cronaca senza gancio | filtrato prima |
+
+**Default mentale**: quando dubbi tra X e X+1, scegli X. Quando hai dato 9 verifica due volte che valga davvero. La maggior parte degli articoli IT enterprise di buona qualità sta a **6-7**, non a 9. Un radar che esce con 10 articoli a 9 è un radar rotto.
+
+## BONUS (applica con misura — cumulati MAX +3)
+
+I bonus non si sommano indiscriminatamente. Il **tetto massimo di bonus cumulati è +3**, anche se un articolo tocca più voci. Scegli le 1-2 più rilevanti, non sommare tutto.
+
+- **+2** se `Portfolio match rilevato:` è presente nell'input dal sistema (UNICO segnale affidabile)
+- **+1** se argomento centrale è HPC/AI on-premise (non "menziona AI" — è il cuore dell'articolo)
+- **+1** se argomento centrale è storage parallelo, SAN, NAS enterprise (la nicchia "The Storage Expert")
+- **+1** se Broadcom/VMware/post-licensing AGGIUNGE prospettiva nuova (vedi malus topic-ovvio sotto)
 - **+1** se focus Italia (PA, università, ricerca italiana)
-- **+1** se dato quantitativo citabile (GB/s, IOPS, TB, %, TCO)
-- **+1** se trend regolatorio/normativo IT (AI Act, GDPR, PNRR digitalizzazione)
+- **+1** se dato quantitativo citabile concreto e specifico (GB/s, IOPS, TB, %, TCO) — non generico "molto"
 
-## MALUS (applica SEMPRE)
+## MALUS (applica SEMPRE — illimitati)
 
 - **-3** se è cronaca pura senza un gancio tecnico interpretabile
 - **-2** se è **B2C consumer tech** (gaming card, smartphone, gadget)
 - **-2** se è **marketing-speak vuoto**: "leader assoluto", "soluzioni innovative", "best in class", "trasformazione digitale" senza sostanza tecnica
 - **-2** se è **leadership-porn motivazionale** sull'angolo CEO non ancorato all'IT enterprise
+- **-2** **TOPIC OVVIO**: Broadcom-VMware è diventato cronaca quotidiana. Un articolo che ribadisce "Broadcom ha alzato i prezzi" senza aggiungere prospettiva tecnica/legale/migrazione concreta vale POCO. Serve un angolo NUOVO (caso cliente, dato concreto, alternativa testata) per restare alto in score.
 - **-1** se è solo annuncio funding/IPO senza implicazione tecnologica
 - **-1** se è hype AI generico senza componente infrastrutturale
+- **-1** se è un articolo evergreen ricicalato (es. "5 cose da sapere sull'HPC")
 
 Il punteggio finale resta nel range 1-10.
+
+## Giustificazione obbligatoria per score >= 9
+
+Se assegni 9 o 10, nel campo `reasoning` devi scrivere ESPLICITAMENTE:
+1. Qual è il gancio unico che SOLO Mactronics può sfruttare (non un competitor generico)
+2. Perché un altro articolo sullo stesso topic non meriterebbe lo stesso score
+3. Quale dato/dettaglio tecnico specifico giustifica il rating
+
+Se non sai rispondere a queste 3 cose con sostanza, lo score è 7-8, non 9.
+
+## Diversificazione: occhio al topic dominante
+
+Se in una settimana ci sono 5 articoli su Broadcom/VMware, NON è normale che meritino tutti 8-9. Il primo articolo solido sul tema ha valore, il quinto è ridondante per il radar. Anche se tecnicamente buono, declassalo di 1-2 punti rispetto al tuo istinto iniziale.
 
 ## Distribuzione angolo company/ceo
 
