@@ -1,10 +1,116 @@
-# Radar Mactronics — Fonti RSS
-# Cadenza bisettimanale (lunedì + giovedì mattina) per HPC/Storage/Server/Virtualizzazione.
-# Tier indica il ruolo strategico, non il flusso (qui flusso unico rankizzato).
+# Radar Mactronics — Fonti RSS (v1.1)
+# Cadenza bisettimanale (lunedì + giovedì mattina).
+# 32 fonti verificate, mappate sui 5 filoni narrativi + 4 aree tecnologiche.
 
 sources:
 
-  # ─── TIER A: storage / datacenter / HPC core (internazionali) ───
+  # ════════════════════════════════════════════════════════════════
+  # ITALIANE B2B AUTOREVOLI
+  # ════════════════════════════════════════════════════════════════
+  # Citate nel Piano Marketing v2 (target backlink, audience CTO/IT Manager IT).
+  # Coprono F1 (autorevolezza), F3 (trend italiani), F4 (vendor co-content IT).
+
+  - name: "ICT4Executive"
+    feed_url: "https://www.ict4executive.it/feed/"
+    tier: 1
+    category: "cio_target_it"
+    language: "it"
+    flow: "fast"
+    notes: "Riferimento per CIO/IT Manager italiani — DA 65+, citata nel piano"
+
+  - name: "ZeroUno"
+    feed_url: "https://www.zerounoweb.it/feed/"
+    tier: 1
+    category: "it_business_it"
+    language: "it"
+    flow: "fast"
+    notes: "Magazine IT enterprise italiano, citato nel piano marketing"
+
+  - name: "CorCom"
+    feed_url: "https://www.corrierecomunicazioni.it/feed/"
+    tier: 1
+    category: "ict_policy_it"
+    language: "it"
+    flow: "fast"
+    notes: "ICT business e policy Italia, fonte PR strategica"
+
+  - name: "CIO Italia"
+    feed_url: "https://www.cio.com/it/feed/"
+    tier: 1
+    category: "cio_target_it"
+    language: "it"
+    flow: "fast"
+    notes: "Audience CTO/CIO italiana — target diretto del CEO Samir"
+
+  - name: "Agenda Digitale"
+    feed_url: "https://www.agendadigitale.eu/feed/"
+    tier: 1
+    category: "policy_pa"
+    language: "it"
+    flow: "fast"
+    notes: "Policy digitale, PNRR, PA — F3 trend + gare PA"
+
+  - name: "BitMAT"
+    feed_url: "https://www.bitmat.it/feed/"
+    tier: 2
+    category: "it_italia"
+    language: "it"
+    flow: "fast"
+    notes: "IT business Italia, focus enterprise e canale"
+
+  - name: "01net.it"
+    feed_url: "https://www.01net.it/feed/"
+    tier: 2
+    category: "it_italia"
+    language: "it"
+    flow: "fast"
+    notes: "IT generalista italiano, infrastruttura e cloud"
+
+  - name: "Punto Informatico"
+    feed_url: "https://www.punto-informatico.it/feed/"
+    tier: 2
+    category: "it_italia"
+    language: "it"
+    flow: "fast"
+    notes: "IT news Italia (alcune notizie consumer, filtrare con keyword)"
+
+  - name: "Lineaedp"
+    feed_url: "https://www.lineaedp.it/feed/"
+    tier: 2
+    category: "it_business_it"
+    language: "it"
+    flow: "fast"
+    notes: "IT business Italia, system integrator e canale"
+
+  - name: "Tom's Hardware Italia"
+    feed_url: "https://www.tomshw.it/feed/"
+    tier: 3
+    category: "hardware_it"
+    language: "it"
+    flow: "fast"
+    notes: "Hardware Italia (filtrare consumer con keyword pre-filtro)"
+
+  - name: "StartupItalia"
+    feed_url: "https://startupitalia.eu/feed"
+    tier: 3
+    category: "innovation_it"
+    language: "it"
+    flow: "fast"
+    notes: "Funding/M&A tech italiano, occasionalmente AI/datacenter Italia"
+
+  - name: "Wired Italia"
+    feed_url: "https://www.wired.it/feed/rss"
+    tier: 3
+    category: "tech_lifestyle"
+    language: "it"
+    flow: "fast"
+    notes: "Tech generalista; filtra fortemente (molto rumore non rilevante)"
+
+  # ════════════════════════════════════════════════════════════════
+  # STORAGE / HPC / DATACENTER — specialisti internazionali
+  # ════════════════════════════════════════════════════════════════
+  # Cuore del know-how Mactronics: F1 (autorevolezza tecnica),
+  # area_tech storage + hpc_ai + server_workstation.
 
   - name: "Blocks & Files"
     feed_url: "https://blocksandfiles.com/feed/"
@@ -20,7 +126,7 @@ sources:
     category: "storage"
     language: "en"
     flow: "fast"
-    notes: "Test e review storage hardware, vendor comparativi"
+    notes: "Test/review storage hardware, vendor comparativi"
 
   - name: "The Next Platform"
     feed_url: "https://www.nextplatform.com/feed/"
@@ -28,7 +134,7 @@ sources:
     category: "hpc_server"
     language: "en"
     flow: "fast"
-    notes: "HPC, server architecture, GPU computing — fonte chiave per F1+F3"
+    notes: "HPC, server architecture, GPU computing — fonte chiave F1+F3"
 
   - name: "HPCwire"
     feed_url: "https://www.hpcwire.com/feed/"
@@ -36,7 +142,23 @@ sources:
     category: "hpc"
     language: "en"
     flow: "fast"
-    notes: "Specialista HPC mondiale, eventi (ISC, SC), Top500"
+    notes: "HPC mondiale, eventi ISC/SC, Top500, ricerca scientifica"
+
+  - name: "EnterpriseAI"
+    feed_url: "https://www.hpcwire.com/aiwire//feed/"
+    tier: 1
+    category: "ai_enterprise"
+    language: "en"
+    flow: "fast"
+    notes: "AI enterprise/HPC (branch HPCwire), AI on-premise e MLOps"
+
+  - name: "Top500 News"
+    feed_url: "https://top500.org/news/feed/"
+    tier: 1
+    category: "hpc_benchmark"
+    language: "en"
+    flow: "slow"
+    notes: "Lista Top500 supercomputing — bassa frequenza, autorevolezza max"
 
   - name: "Data Center Knowledge"
     feed_url: "https://www.datacenterknowledge.com/rss.xml"
@@ -44,7 +166,31 @@ sources:
     category: "datacenter"
     language: "en"
     flow: "fast"
-    notes: "Business e architettura data center, sostenibilità, AI infrastructure"
+    notes: "Business e architettura DC, sostenibilità, AI infrastructure"
+
+  - name: "DataCenter Dynamics"
+    feed_url: "https://www.datacenterdynamics.com/en/rss/"
+    tier: 1
+    category: "datacenter"
+    language: "en"
+    flow: "fast"
+    notes: "Data center business globale: colocation, edge, cooling"
+
+  - name: "ServerTheHome"
+    feed_url: "https://www.servethehome.com/feed/"
+    tier: 2
+    category: "server_hardware"
+    language: "en"
+    flow: "fast"
+    notes: "Server hardware reviews ultra-specialist (Supermicro/Gigabyte/AMD)"
+
+  - name: "The Stack"
+    feed_url: "https://thestack.technology/feed/"
+    tier: 2
+    category: "enterprise_it"
+    language: "en"
+    flow: "fast"
+    notes: "Enterprise IT news, copertura AI on-premise e cloud privato"
 
   - name: "The Register"
     feed_url: "https://www.theregister.com/headlines.atom"
@@ -52,9 +198,43 @@ sources:
     category: "enterprise_it"
     language: "en"
     flow: "fast"
-    notes: "IT enterprise news, ottimo per F3 (Broadcom/VMware, NVIDIA, AI)"
+    notes: "IT enterprise news, ottimo per F3 (Broadcom, NVIDIA, AI policy)"
 
-  # ─── TIER B: IT business / networking / enterprise ───
+  # ════════════════════════════════════════════════════════════════
+  # IT ENTERPRISE INTERNAZIONALE
+  # ════════════════════════════════════════════════════════════════
+
+  - name: "SiliconANGLE"
+    feed_url: "https://siliconangle.com/feed/"
+    tier: 2
+    category: "enterprise_tech"
+    language: "en"
+    flow: "fast"
+    notes: "Tech enterprise USA, ottima copertura cloud/AI/storage"
+
+  - name: "ComputerWeekly"
+    feed_url: "https://www.computerweekly.com/rss/All-Computer-Weekly-content.xml"
+    tier: 2
+    category: "enterprise_it"
+    language: "en"
+    flow: "fast"
+    notes: "IT enterprise UK, policy + tecnologia"
+
+  - name: "The New Stack"
+    feed_url: "https://thenewstack.io/feed/"
+    tier: 2
+    category: "cloud_native"
+    language: "en"
+    flow: "fast"
+    notes: "Cloud native, Kubernetes, AI infrastructure dev"
+
+  - name: "ITPro"
+    feed_url: "https://www.itpro.com/feeds.xml"
+    tier: 2
+    category: "enterprise_it"
+    language: "en"
+    flow: "fast"
+    notes: "IT pro UK, copertura broad enterprise"
 
   - name: "Network World"
     feed_url: "https://www.networkworld.com/feed/"
@@ -64,71 +244,67 @@ sources:
     flow: "fast"
     notes: "Networking, virtualizzazione, multi-cloud"
 
+  - name: "ZDNet Storage"
+    feed_url: "https://www.zdnet.com/topic/storage/rss.xml"
+    tier: 2
+    category: "storage"
+    language: "en"
+    flow: "fast"
+    notes: "Storage news ZDNet"
+
   - name: "TechCrunch Enterprise"
     feed_url: "https://techcrunch.com/category/enterprise/feed/"
-    tier: 2
+    tier: 3
     category: "enterprise_tech"
     language: "en"
     flow: "fast"
-    notes: "Funding, M&A, AI enterprise — utile per F3 trend"
+    notes: "Funding, M&A, AI enterprise"
 
-  - name: "Tom's Hardware Italia"
-    feed_url: "https://www.tomshw.it/feed/"
+  - name: "IEEE Spectrum"
+    feed_url: "https://spectrum.ieee.org/customfeeds/feed/all-topics/rss"
     tier: 2
-    category: "hardware_it"
-    language: "it"
+    category: "ai_research"
+    language: "en"
     flow: "fast"
-    notes: "Hardware in italiano, GPU/CPU news"
+    notes: "AI ricerca e ingegneria, autorevole per F3 trend tecnico-scientifico"
 
-  # ─── TIER C: IT italiano / settore ───
+  # ════════════════════════════════════════════════════════════════
+  # VENDOR PARTNER (Filone F4)
+  # ════════════════════════════════════════════════════════════════
+  # Blog ufficiali dei vendor in portfolio. Quando un partner annuncia
+  # qualcosa, gancio ideale per co-content + portfolio_match bonus.
 
-  - name: "BitMAT"
-    feed_url: "https://www.bitmat.it/feed/"
-    tier: 3
-    category: "it_italia"
-    language: "it"
+  - name: "NVIDIA Blog"
+    feed_url: "https://blogs.nvidia.com/feed/"
+    tier: 1
+    category: "vendor_partner"
+    language: "en"
     flow: "fast"
-    notes: "IT business in Italia, focus enterprise e canale"
+    notes: "Annunci NVIDIA: GPU, DGX, NIM, AI factory — F4 prioritario"
 
-  - name: "01net.it"
-    feed_url: "https://www.01net.it/feed/"
-    tier: 3
-    category: "it_italia"
-    language: "it"
+  - name: "VMware Blog"
+    feed_url: "https://blogs.vmware.com/feed"
+    tier: 1
+    category: "vendor_partner"
+    language: "en"
     flow: "fast"
-    notes: "Notizie IT italiane, infrastruttura e cloud"
+    notes: "VMware/Broadcom: F3 trend caldo post-acquisizione"
 
-  - name: "Punto Informatico"
-    feed_url: "https://www.punto-informatico.it/feed/"
-    tier: 3
-    category: "it_italia"
-    language: "it"
+  - name: "Red Hat Blog"
+    feed_url: "https://www.redhat.com/en/rss/blog"
+    tier: 1
+    category: "vendor_partner"
+    language: "en"
     flow: "fast"
-    notes: "IT generalista italiano"
+    notes: "Red Hat: virtualizzazione enterprise (Open-E è partner Mactronics)"
 
-  - name: "Lineaedp"
-    feed_url: "https://www.lineaedp.it/feed/"
-    tier: 3
-    category: "it_italia"
-    language: "it"
-    flow: "fast"
-    notes: "IT business Italia, system integrator"
-
-  - name: "CIO Italia"
-    feed_url: "https://www.cio.com/it/feed/"
+  - name: "Western Digital Blog"
+    feed_url: "https://blog.westerndigital.com/feed/"
     tier: 2
-    category: "cio_target"
-    language: "it"
+    category: "vendor_partner"
+    language: "en"
     flow: "fast"
-    notes: "Audience CTO/CIO — il target diretto del CEO Samir"
-
-  - name: "Agenda Digitale"
-    feed_url: "https://www.agendadigitale.eu/feed/"
-    tier: 3
-    category: "policy_digitale"
-    language: "it"
-    flow: "fast"
-    notes: "Policy digitale, PNRR, PA — utile per Storage PA, gare"
+    notes: "WD corporate blog: HDD enterprise, storage trend"
 
 
 # ─── Configurazione globale ───
@@ -146,4 +322,4 @@ settings:
   min_score: 5
 
   # Massimo articoli totali nell'email
-  max_email_items: 10
+  max_email_items: 12
