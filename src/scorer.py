@@ -176,11 +176,24 @@ def validate_portfolio_match(llm_value: str | None) -> str | None:
     return None
 
 
-# Regex word-boundary per match di parole brevi del settore IT enterprise
-# (matchano "AI" come parola, non come substring di altro)
+# Regex word-boundary per acronimi del settore IT enterprise.
+#
+# ⚠️ REGOLA: qui vanno SOLO acronimi che non esistono come parola comune
+# in italiano o inglese. Un match spurio costa una chiamata LLM a vuoto.
+# Rimosse in v1.3 dopo misurazione su 1.087 chiamate reali:
+#   "it" → "it is", "with it" in ogni testo inglese (la peggiore)
+#   "ha" → "ha" italiano / risate in inglese
+#   "dr" → "Dr." nei nomi
+#   "pa" → troppo generico
+#   "ml|dl|fc|ib|vm" → rumore in testi non tecnici
+#   "ai" → preposizione italiana ("ai clienti"); l'AI è già coperta da
+#          RELEVANT_KEYWORDS con termini contestuali ("ai act", "ai
+#          workload", "intelligenza artificiale", "generativ", ecc.)
+# Effetto misurato: 205 articoli passavano solo per queste sigle, 180 dei
+# quali poi scartati dallo scoring — il 19% del budget API.
 SHORT_WORDS_RE = re.compile(
-    r"\b(ai|hpc|gpu|cpu|ram|ssd|hdd|nvme|sas|san|nas|hci|vdi|vm|"
-    r"ipmi|tco|roi|sla|pa|pmi|cto|cio|it|ml|dl|dr|ha|fc|ib|rdma)\b",
+    r"\b(hpc|gpu|cpu|ram|ssd|hdd|nvme|sas|san|nas|hci|vdi|"
+    r"ipmi|tco|roi|sla|pmi|cto|cio|rdma)\b",
     re.IGNORECASE
 )
 
