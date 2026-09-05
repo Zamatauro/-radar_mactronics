@@ -93,7 +93,7 @@ def main():
         return
 
     logger.info("=" * 50)
-    logger.info("RADAR MACTRONICS — v1.0")
+    logger.info("RADAR MACTRONICS — v1.4")
     logger.info("Pre-filtro keyword + portfolio match + 2 worker + rate limiter")
     logger.info("=" * 50)
 
@@ -114,8 +114,8 @@ def main():
 
     # 3. Compose
     logger.info("--- FASE 3: Composizione email ---")
-    from src.composer import compose_email
-    html = compose_email()
+    from src.composer import compose_email, mark_emailed
+    html, sent_ids = compose_email()
 
     if not html:
         logger.info("Nessun articolo sopra la soglia — niente email oggi")
@@ -129,12 +129,15 @@ def main():
 
     # 4. Send
     if dry_run:
-        logger.info("--- DRY RUN: email NON inviata ---")
+        logger.info("--- DRY RUN: email NON inviata, articoli NON marcati come inviati ---")
     else:
         logger.info("--- FASE 4: Invio email ---")
         from src.sender import send_email
         ok = send_email(html)
         if ok:
+            # emailed_at si scrive solo ora: se Resend fallisce gli articoli
+            # restano disponibili per il run successivo
+            mark_emailed(sent_ids)
             logger.info("Email inviata con successo")
         else:
             logger.error("Invio email fallito")

@@ -13,6 +13,12 @@ on:
 
   workflow_dispatch:
 
+# Mai due run sovrapposti: il secondo fa reset --hard e copierebbe sopra
+# il proprio DB, cancellando emailed_at e punteggi del primo.
+concurrency:
+  group: radar-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   radar:
     runs-on: ubuntu-latest
@@ -54,7 +60,10 @@ jobs:
         run: |
           git config user.name "radar-mactronics-bot"
           git config user.email "radar@radar.oida-labs.com"
-          if ! git diff --quiet data/radar.db 2>/dev/null && [ -f data/radar.db ]; then
+          # NB: si usa `git status --porcelain` e non `git diff`, perche' al
+          # primo run il DB e' un file NUOVO (untracked) e `git diff` non lo
+          # vede: il commit verrebbe saltato e il DB mai persistito.
+          if [ -f data/radar.db ] && [ -n "$(git status --porcelain data/radar.db)" ]; then
             cp data/radar.db /tmp/radar.db.new
             git fetch origin main
             git reset --hard origin/main

@@ -160,8 +160,13 @@ def prepare_article(art: dict, weekday: int = 0) -> dict:
     return art
 
 
-def compose_email(min_score: int = 5) -> str | None:
-    """Genera l'HTML dell'email. Ritorna None se non ci sono articoli rilevanti."""
+def compose_email(min_score: int = 5) -> tuple[str | None, list[str]]:
+    """Genera l'HTML dell'email.
+
+    Ritorna (html, ids degli articoli inclusi). Gli articoli NON vengono
+    marcati come inviati qui: emailed_at si scrive in main.py solo dopo che
+    Resend ha accettato l'email (e mai in dry-run/preview).
+    """
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
 
@@ -170,7 +175,7 @@ def compose_email(min_score: int = 5) -> str | None:
     if not articles["top"] and not articles["maison"]:
         logger.info("Nessun articolo sopra la soglia — niente email oggi")
         conn.close()
-        return None
+        return None, []
 
     # Calcola info giornata (timezone Europe/Rome)
     try:
@@ -206,27 +211,35 @@ def compose_email(min_score: int = 5) -> str | None:
         generated_at=now.strftime("%H:%M Rome"),
     )
 
-    # Segna gli articoli come inviati
-    now_iso = now.isoformat()
-    all_sent_ids = {a["id"] for a in articles["top"]} | {a["id"] for a in articles["maison"]}
-    for aid in all_sent_ids:
-        conn.execute(
-            "UPDATE articles SET emailed_at = ? WHERE id = ?",
-            (now_iso, aid)
-        )
-    conn.commit()
+    sent_ids = sorted({a["id"] for a in articles["top"]} | {a["id"] for a in articles["maison"]})
     conn.close()
+
 
     logger.info(
         f"Email composta: {len(top_prepared)} top "
         f"({n_company}C / {n_ceo}CEO) + {len(maison_prepared)} maison"
     )
-    return html
+    return html, sent_ids
+
+
+def mark_emailed(article_ids: list[str]) -> None:
+    """Marca gli articoli come inviati. Da chiamare SOLO dopo un invio riuscito."""
+    if not article_ids:
+        return
+    now_iso = datetime.now(timezone.utc).isoformat()
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.executemany(
+        "UPDATE articles SET emailed_at = ? WHERE id = ?",
+        [(now_iso, art_id) for art_id in article_ids],
+    )
+    conn.commit()
+    conn.close()
+    logger.info(f"{len(article_ids)} articoli marcati come inviati")
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
-    html = compose_email()
+    html, _ids = compose_email()
     if html:
         out = Path(__file__).parent.parent / "data" / "preview_email.html"
         out.write_text(html, encoding="utf-8")

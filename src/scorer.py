@@ -31,6 +31,14 @@ MAX_WORKERS = 2
 # sotto 50 req/min con margine di sicurezza (~46 req/min)
 MIN_SECONDS_BETWEEN_CALLS = 1.3
 
+# Tentativi per articolo prima di arrendersi e lasciare score NULL
+# (l'articolo resta in coda e viene ritentato al run successivo)
+SCORE_ATTEMPTS = 2
+
+
+class CreditExhausted(Exception):
+    """Credito API esaurito (HTTP 400): inutile insistere in questo run."""
+
 
 # ─────────────────────────────────────────────────────────────
 # PRE-FILTRO KEYWORD
@@ -307,14 +315,12 @@ def score_article(client: anthropic.Anthropic, system_prompt: str, article: dict
 
         raw = response.content[0].text.strip()
 
-        # Pulisci eventuale markdown wrapping
-        if raw.startswith("```"):
-            raw = raw.split("\n", 1)[1] if "\n" in raw else raw[3:]
-            if raw.endswith("```"):
-                raw = raw[:-3]
-            raw = raw.strip()
-
-        result = json.loads(raw)
+        # Parsing robusto: prende il primo oggetto JSON e ignora eventuale
+        # testo prima (fence markdown) o dopo (chiacchiere del modello).
+        start = raw.find("{")
+        if start == -1:
+            raise json.JSONDecodeError("nessun oggetto JSON nella risposta", raw, 0)
+        result, _ = json.JSONDecoder().raw_decode(raw[start:])
 
         # Validazione anti-hallucination portfolio_match: il code-detector
         # ha priorità sul LLM. Se il LLM ha inventato un brand, lo scartiamo.
@@ -357,10 +363,13 @@ def score_article(client: anthropic.Anthropic, system_prompt: str, article: dict
 
     except json.JSONDecodeError as e:
         logger.error(f"JSON non valido per '{article['title']}': {e}\nRaw: {raw[:500]}")
-        return {"score": 0, "reasoning": f"Errore parsing JSON: {e}"}
+        return None
     except anthropic.APIError as e:
         logger.error(f"Errore API per '{article['title']}': {e}")
-        return {"score": 0, "reasoning": f"Errore API: {e}"}
+        # Un errore 400 (es. credito esaurito) non si risolve ritentando subito
+        if getattr(e, "status_code", None) == 400:
+            raise CreditExhausted(str(e)) from e
+        return None
 
 
 def save_score(conn: sqlite3.Connection, article_id: str, result: dict):
@@ -467,22 +476,45 @@ def score_all() -> int:
     rate_limiter = RateLimiter(MIN_SECONDS_BETWEEN_CALLS)
 
     scored = 0
+    failed = 0
     scored_lock = threading.Lock()
+    credit_gone = threading.Event()
 
-    def process_one(art: dict) -> tuple[int, str, int]:
-        """Processa un articolo: rate limit, API call, save su conn del thread."""
-        rate_limiter.wait()
-        result = score_article(client, system_prompt, art)
+    def process_one(art: dict) -> tuple[int | None, str, int]:
+        """Processa un articolo: rate limit, API call con retry, save su conn del thread.
+
+        Un errore NON viene salvato come score 0: l'articolo resta con score
+        NULL e viene ritentato al run successivo.
+        """
+        nonlocal scored, failed
+        result = None
+        for attempt in range(SCORE_ATTEMPTS):
+            if credit_gone.is_set():
+                break
+            rate_limiter.wait()
+            try:
+                result = score_article(client, system_prompt, art)
+            except CreditExhausted:
+                credit_gone.set()
+                break
+            if result is not None:
+                break
+            if attempt < SCORE_ATTEMPTS - 1:
+                time.sleep(2 * (attempt + 1))
+        if result is None:
+            with scored_lock:
+                failed += 1
+                current = scored + failed
+            return (None, art["title"], current)
         # Ogni thread ha la propria connessione SQLite (thread-safety)
         thread_conn = sqlite3.connect(str(DB_PATH))
         try:
             save_score(thread_conn, art["id"], result)
         finally:
             thread_conn.close()
-        nonlocal scored
         with scored_lock:
             scored += 1
-            current = scored
+            current = scored + failed
         return (result.get("score", 0), art["title"], current)
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
@@ -492,13 +524,21 @@ def score_all() -> int:
                 score, title, current = future.result()
                 # Log progresso ogni 10 articoli o sui primi 3
                 if current <= 3 or current % 10 == 0 or current == len(to_score):
+                    label = f"score {score}/10" if score is not None else "NON valutato"
                     logger.info(
-                        f"  [{current}/{len(to_score)}] score {score}/10 — {title[:55]}..."
+                        f"  [{current}/{len(to_score)}] {label} — {title[:55]}..."
                     )
             except Exception as e:
                 logger.error(f"Errore processing articolo: {e}")
 
     logger.info(f"Scoring completato: {scored} articoli classificati via LLM + {off_topic} scartati via keyword")
+    if credit_gone.is_set():
+        # ::error:: rende il problema visibile nella UI di GitHub Actions
+        print("::error::Credito API Anthropic esaurito durante lo scoring — ricaricare da Console > Plans & Billing")
+        logger.error("Credito API esaurito: gli articoli rimasti restano in coda per il prossimo run")
+    if failed:
+        print(f"::warning::{failed} articoli non valutati per errori API/parsing — restano in coda e verranno ritentati al prossimo run")
+        logger.warning(f"{failed} articoli non valutati (score NULL, ritentati al prossimo run)")
     return scored
 
 
