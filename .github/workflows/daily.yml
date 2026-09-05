@@ -12,6 +12,11 @@ on:
     - cron: "0 4,5 * * 1,4"
 
   workflow_dispatch:
+    inputs:
+      force:
+        description: "Invia anche se oggi e' gia' partita un'email"
+        type: boolean
+        default: false
 
 # Mai due run sovrapposti: il secondo fa reset --hard e copierebbe sopra
 # il proprio DB, cancellando emailed_at e punteggi del primo.
@@ -50,8 +55,12 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "schedule" ]; then
             python main.py --skip-if-sent --min-hour=6
-          else
+          elif [ "${{ inputs.force }}" = "true" ]; then
+            # Dispatch forzato dalla UI (force=true): invia comunque
             python main.py
+          else
+            # Dispatch normale (Worker sveglia o UI): protetto dal doppio invio
+            python main.py --skip-if-sent
           fi
 
       # Persistenza DB: strategia anti-conflitto reset+overwrite
@@ -73,4 +82,20 @@ jobs:
             git push
           else
             echo "DB non modificato, niente da committare"
+          fi
+
+      # Dead-man's switch: ping a healthchecks.io se il run e' andato a buon
+      # fine. Se il ping non arriva entro l'orario atteso, healthchecks manda
+      # un'email: copre il caso "il radar non e' proprio partito", che le
+      # notifiche GitHub non coprono (avvisano solo dei run falliti).
+      # Senza il secret HEALTHCHECK_URL lo step non fa nulla.
+      - name: Ping healthcheck
+        if: success()
+        env:
+          HC_URL: ${{ secrets.HEALTHCHECK_URL }}
+        run: |
+          if [ -n "$HC_URL" ]; then
+            curl -fsS -m 10 --retry 3 "$HC_URL" || true
+          else
+            echo "HEALTHCHECK_URL non configurato, salto il ping"
           fi
