@@ -53,6 +53,15 @@ jobs:
           RADAR_TO_EMAILS: ${{ vars.RADAR_TO_EMAILS }}
           TZ: Europe/Rome
         run: |
+          # Il checkout e' PINNATO alla SHA del momento del dispatch: un run
+          # creato pochi minuti dopo un altro non vede l'emailed_at appena
+          # pushato dal primo, e --skip-if-sent non scatta (doppioni del
+          # 14/09/2026). Allineiamo a origin/main PRIMA di decidere se
+          # inviare: col gruppo concurrency i run sono in fila, quindi il
+          # secondo parte a push del primo gia' avvenuto.
+          git fetch origin main
+          git reset --hard FETCH_HEAD
+
           if [ "${{ github.event_name }}" = "schedule" ]; then
             python main.py --skip-if-sent --min-hour=6
           elif [ "${{ inputs.force }}" = "true" ]; then
